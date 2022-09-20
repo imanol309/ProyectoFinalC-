@@ -28,7 +28,6 @@ protected:
     int salarioTotal;
     int cantidadBajoSustento;
     string datosCreditoPersonal[100][100];
-    int contadorPersonal = 0;
     string puedenRecibirCredito[100][100];
     string informacionesNecesarias[6] = {"Nombre del solicitante",
                                          "Valor por el que pide el crédito",
@@ -51,31 +50,35 @@ void CreditoPersonal::incresarDatosPersonal()
     {
         for (int j = 0; j < 6; j++)
         {
-            cout << "Usuario " << i << ", Agregar " << informacionesNecesarias[contadorPersonal++] << "[ " << i << " ] [ " << j << " ] : " << endl;
+            cout << "Usuario " << i + 1 << ", Agregar " << informacionesNecesarias[j] << "[ " << i << " ] [ " << j << " ] : ";
             cin >> datosCreditoPersonal[i][j];
-            // if(datosCreditoPersonal[i][j] == datosCreditoPersonal[i][5]) {
-            //     if (datosCreditoPersonal[i][4] - (datosCreditoPersonal[i][5] * 50) > 100) {
-
-            //     }
-            //     cout << "Entro a" << datosCreditoPersonal[i][5] * 50 << endl;
-            // };
+            // getline (cin, datosCreditoPersonal[i][j]);
+            if (datosCreditoPersonal[i][j] == datosCreditoPersonal[i][5])
+            {
+                if (stoi(datosCreditoPersonal[i][4]) - (stoi(datosCreditoPersonal[i][5]) * 50) > 100)
+                {
+                    cout << "Entro a " << stoi(datosCreditoPersonal[i][5]) * 50 << endl;
+                };
+            };
         };
     };
 };
 
 void CreditoPersonal::mostrarCreditoPersonal()
 {
+    printf("+-----------------------------------------\n");
     for (int i = 0; i < filasPersonas; i++)
     {
         for (int j = 0; j < 6; j++)
         {
-            cout << datosCreditoPersonal[i][j] << " | ";
-            // std::cout
-            //     << std::right << std::setw(26)
-            //     << valor[i][j] << '\n';
+            cout << "|";
+            std::cout
+                << std::right << std::setw(41)
+                << informacionesNecesarias[j] << ": " << datosCreditoPersonal[i][j] << '\t' << '\n';
         };
-        cout << endl;
+        printf("+-----------------------------------------\n");
     };
+    cout << endl;
 };
 
 void CreditoPersonal::opcionesMostrarDatos()
@@ -151,13 +154,12 @@ int main()
         if (tipoCredito == 1)
         {
             cout << "Necesitamos que increses algunas informaciones para tu credito personal" << endl;
-            cout << "Cuantas Personas piensas agregar: " << endl;
+            cout << "Cuantas Personas piensas agregar: ";
             cin >> usuarioPersonal.filasPersonas;
-            system("cls");
+            // system("cls");
             usuarioPersonal.incresarDatosPersonal();
             usuarioPersonal.mostrarCreditoPersonal();
             usuarioPersonal.opcionesMostrarDatos();
-            // system("PAUSE");
         };
         if (tipoCredito == 2)
         {
