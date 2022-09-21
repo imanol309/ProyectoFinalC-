@@ -43,21 +43,33 @@ public:
     void opcionesMostrarDatos();
 };
 
+void forGuardar(int Filas, string arrayPuede[100][100], string arrayGuardado[100][100])
+{
+    for (int P = 0; P < Filas; P++)
+    {
+        for (int I = 0; I < 6; I++)
+        {
+            arrayPuede[P][I] = arrayGuardado[P][I];
+        };
+    };
+};
+
 void CreditoPersonal::incresarDatosPersonal()
 {
-
-    for (int i = 0; i < filasPersonas; i++)
+    for (int I = 0; I < filasPersonas; I++)
     {
-        for (int j = 0; j < 6; j++)
+        for (int J = 0; J < 6; J++)
         {
-            cout << "Usuario " << i + 1 << ", Agregar " << informacionesNecesarias[j] << "[ " << i << " ] [ " << j << " ] : ";
-            cin >> datosCreditoPersonal[i][j];
+            cout << "Usuario " << I + 1 << ", Agregar " << informacionesNecesarias[J] << "[ " << I << " ] [ " << J << " ] : ";
+            cin >> datosCreditoPersonal[I][J];
             // getline (cin, datosCreditoPersonal[i][j]);
-            if (datosCreditoPersonal[i][j] == datosCreditoPersonal[i][5])
+            if (datosCreditoPersonal[I][J] == datosCreditoPersonal[I][5])
             {
-                if (stoi(datosCreditoPersonal[i][4]) - (stoi(datosCreditoPersonal[i][5]) * 50) > 100)
+                if (stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50) > 100)
                 {
-                    cout << "Entro a " << stoi(datosCreditoPersonal[i][5]) * 50 << endl;
+                    cout << I << endl;
+                    cout << "ENTRO" << endl;
+                    forGuardar(I, puedenRecibirCredito, datosCreditoPersonal);
                 };
             };
         };
@@ -73,8 +85,8 @@ void CreditoPersonal::mostrarCreditoPersonal()
         {
             cout << "|";
             std::cout
-                << std::right << std::setw(41)
-                << informacionesNecesarias[j] << ": " << datosCreditoPersonal[i][j] << '\t' << '\n';
+                << std::right << std::setw(43)
+                << informacionesNecesarias[j] << ": " << puedenRecibirCredito[i][j] << '\t' << '\n';
         };
         printf("+-----------------------------------------\n");
     };
@@ -97,6 +109,7 @@ protected:
     string codigo;
     int contadorEmpresarial;
     string datosCreditoEmpresarial[100][100];
+    string puedenRecibirCreditoEmpresarial[100][100];
     string informacionesEmpresa[6] = {
         "El nombre del director",
         "Dirección del mismo",
@@ -113,12 +126,28 @@ public:
 
 void CreditoEmpresa::incresarDatosEmpresarial()
 {
-    for (int i = 0; i < filasEmpresas; i++)
+
+    for (int I = 0; I < filasEmpresas; I++)
     {
-        for (int j = 0; j < 6; j++)
+        for (int J = 0; J < 6; J++)
         {
-            cout << "Usuario " << i << ", Agregar " << informacionesEmpresa[contadorEmpresarial++] << "[ " << i << " ] [ " << j << " ] : " << endl;
-            cin >> datosCreditoEmpresarial[i][j];
+            cout << "Usuario " << I << ", Agregar " << informacionesEmpresa[contadorEmpresarial++] << "[ " << I << " ] [ " << J << " ] : " << endl;
+            cin >> datosCreditoEmpresarial[I][J];
+            if (datosCreditoEmpresarial[I][J] == datosCreditoEmpresarial[I][5])
+            {
+                if (stoi(datosCreditoEmpresarial[I][3]) > 300 && stoi(datosCreditoEmpresarial[I][2]) >= 10000)
+                {
+                    forGuardar(I, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
+                }
+                if (stoi(datosCreditoEmpresarial[I][3]) < 300 && stoi(datosCreditoEmpresarial[I][2]) >= 5000)
+                {
+                    forGuardar(I, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
+                }
+                if (stoi(datosCreditoEmpresarial[I][3]) < 100 && stoi(datosCreditoEmpresarial[I][2]) >= 1000)
+                {
+                    forGuardar(I, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
+                }
+            }
         };
     };
 }
@@ -129,7 +158,7 @@ void CreditoEmpresa::mostrarCreditoEmpresa()
     {
         for (int j = 0; j < 6; j++)
         {
-            cout << datosCreditoEmpresarial[i][j] << " | ";
+            cout << puedenRecibirCreditoEmpresarial[i][j] << " | ";
         };
         cout << endl;
     };
