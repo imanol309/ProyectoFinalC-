@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <stdio.h>
+#include<vector>
+#include<ios>
 using namespace std;
 
-// ! Usar mas la clase Banco para que la maestra vea que es orientado a objeto
 class Banco
 {
 protected:
@@ -12,16 +14,8 @@ protected:
     string direccion;
 
 public:
-    void mostrarCredito();
     void forGuardar(int, int, int, string[100][100], string[100][100]);
     void modeloMostrarDatos(int, int, string[8], string[100][100]);
-};
-
-void Banco::mostrarCredito()
-{
-    cout << "Nombre del solicitantes: " << nombreDelSolicitante << endl;
-    cout << "Valor por el que pide el crédito: " << valorCredito << endl;
-    cout << "Dirección: " << direccion << endl;
 };
 
 void Banco::forGuardar(int Filas, int filaGuardad, int filaRecorrer, string arrayPuede[100][100], string arrayGuardado[100][100])
@@ -97,22 +91,26 @@ void CreditoPersonal::incresarDatosPersonal()
         for (int J = 0; J < 6; J++)
         {
             cout << "Usuario " << I + 1 << ", Agregar " << informacionesNecesarias[J] << "[ " << I << " ] [ " << J << " ] : ";
-            cin >> datosCreditoPersonal[I][J];
+            // cin >> datosCreditoPersonal[I][J];
+            cin.ignore();
+            // string datos[I][J] = datosCreditoPersonal[I][J];
+            getline(std::cin, datosCreditoPersonal[I][J]);
             // getline (cin, datosCreditoPersonal[i][j]);
-            if (datosCreditoPersonal[I][J] == datosCreditoPersonal[I][5])
-            {
-                if (stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50) > 100)
-                {
-                    datosCreditoPersonal[I][6] = to_string(stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50)) + "Pesos";
-                    int D6 = stoi(datosCreditoPersonal[I][6]);
-                    datosCreditoPersonal[I][7] = (D6 > 140) ? "50 Pesos" : (D6 <= 140 && D6 >= 121) ? "40 Pesos"
-                                                                       : (D6 <= 120 && D6 >= 100)   ? "30 Pesos"
-                                                                                                    : "";
-                    datosCreditoPersonal[I][8] = to_string(D6 / stoi(datosCreditoPersonal[I][7])) + " Meses";
-                    forGuardar(I, filasGuardadPersonas, 10, puedenRecibirCredito, datosCreditoPersonal);
-                    filasGuardadPersonas = filasGuardadPersonas + 1;
-                };
-            };
+            cout << datosCreditoPersonal[I][J] << endl;
+            // if (datosCreditoPersonal[I][J] == datosCreditoPersonal[I][5])
+            // {
+            //     if (stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50) > 100)
+            //     {
+            //         datosCreditoPersonal[I][6] = to_string(stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50)) + "Pesos";
+            //         int D6 = stoi(datosCreditoPersonal[I][6]);
+            //         datosCreditoPersonal[I][7] = (D6 > 140) ? "50 Pesos" : (D6 <= 140 && D6 >= 121) ? "40 Pesos"
+            //                                                            : (D6 <= 120 && D6 >= 100)   ? "30 Pesos"
+            //                                                                                         : "";
+            //         datosCreditoPersonal[I][8] = to_string(D6 / stoi(datosCreditoPersonal[I][7])) + " Meses";
+            //         forGuardar(I, filasGuardadPersonas, 10, puedenRecibirCredito, datosCreditoPersonal);
+            //         filasGuardadPersonas = filasGuardadPersonas + 1;
+            //     };
+            // };
         };
         printf("+--------------------------------------------------------+\n");
     };
@@ -120,7 +118,7 @@ void CreditoPersonal::incresarDatosPersonal()
 
 void CreditoPersonal::mostrarCreditoPersonal()
 {
-    modeloMostrarDatos(filasGuardadPersonas, 10, informacionesNecesarias, puedenRecibirCredito);
+    modeloMostrarDatos(filasGuardadPersonas, 10, informacionesNecesarias, datosCreditoPersonal);
 };
 
 void CreditoPersonal::opcionesMostrarDatos()
