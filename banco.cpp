@@ -3,7 +3,7 @@
 #include <iomanip>
 using namespace std;
 
-// ! Usar mas la clase Banco para que la maestra vea que es orientado a objeto 
+// ! Usar mas la clase Banco para que la maestra vea que es orientado a objeto
 class Banco
 {
 protected:
@@ -13,6 +13,8 @@ protected:
 
 public:
     void mostrarCredito();
+    void forGuardar(int, int, int, string[100][100], string[100][100]);
+    void modeloMostrarDatos(int, int, string[8], string[100][100]);
 };
 
 void Banco::mostrarCredito()
@@ -21,6 +23,31 @@ void Banco::mostrarCredito()
     cout << "Valor por el que pide el crédito: " << valorCredito << endl;
     cout << "Dirección: " << direccion << endl;
 };
+
+void Banco::forGuardar(int Filas, int filaGuardad, int filaRecorrer, string arrayPuede[100][100], string arrayGuardado[100][100])
+{
+    for (int I = 0; I < filaRecorrer; I++)
+    {
+        arrayPuede[filaGuardad][I] = arrayGuardado[Filas][I];
+    };
+};
+
+void Banco::modeloMostrarDatos(int filas, int colunas, string informacionModelo[8], string arrayDeDatos[100][100])
+{
+    printf("+-----------------------------------------\n");
+    for (int i = 0; i < filas; i++)
+    {
+        for (int j = 0; j < colunas; j++)
+        {
+            cout << "|";
+            std::cout
+                << std::right << std::setw(43)
+                << informacionModelo[j] << ": " << arrayDeDatos[i][j] << '\t' << '\n';
+        };
+        printf("+-----------------------------------------\n");
+    };
+    cout << endl;
+}
 
 class CreditoPersonal : public Banco
 {
@@ -36,34 +63,32 @@ protected:
         "Cantidad de personas bajo su sustento",
         "Capacidad de pago",
         "Mensualidades a pagar",
-        "Tiempo en demorara en pagar"};
+        "Tiempo en demorar en pagar"};
 
 public:
     int filasPersonas;
-    int filasGuardad = 0;
-
+    int filasGuardadPersonas = 0;
     void incresarDatosPersonal();
     void mostrarCreditoPersonal();
     void opcionesMostrarDatos();
+    void capacidadPorEncima();
 };
 
-void forGuardar(int Filas, int filaGuardad, int filaRecorrer, string arrayPuede[100][100], string arrayGuardado[100][100])
+void CreditoPersonal::capacidadPorEncima()
 {
-    for (int I = 0; I < filaRecorrer; I++)
+    int contadorEncima = 0;
+    string PorEncima[100][100];
+    for (int H = 0; H < filasGuardadPersonas; H++)
     {
-        arrayPuede[filaGuardad][I] = arrayGuardado[Filas][I];
-    };
-};
-
-// void capacidadPorEncima(int filaGuardad, string arrayGuardado[100][100]) {
-//     int contadorEncima = 0;
-//     for(int H = 0; H <filaGuardad; H++) {
-//         if (stoi(arrayGuardado[H][6]) > 200) {
-//             modeloMostrarDatos(filasGuardad, informacionesNecesarias, puedenRecibirCredito);
-
-//         }
-//     }
-// }
+        if (stoi(puedenRecibirCredito[H][6]) > 200)
+        {
+            forGuardar(H, contadorEncima, 9, PorEncima, puedenRecibirCredito);
+            contadorEncima = contadorEncima + 1;
+        }
+    }
+    cout << "Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
+    modeloMostrarDatos(contadorEncima, 9, informacionesNecesarias, PorEncima);
+}
 
 void CreditoPersonal::incresarDatosPersonal()
 {
@@ -78,53 +103,24 @@ void CreditoPersonal::incresarDatosPersonal()
             {
                 if (stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50) > 100)
                 {
-                    datosCreditoPersonal[I][6] = to_string(stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50));
+                    datosCreditoPersonal[I][6] = to_string(stoi(datosCreditoPersonal[I][4]) - ((stoi(datosCreditoPersonal[I][5]) + 1) * 50)) + "Pesos";
                     int D6 = stoi(datosCreditoPersonal[I][6]);
-                    datosCreditoPersonal[I][7] = (D6 > 140) ? "50" : (D6 <= 140 && D6 >= 121) ? "40"
-                                                                 : (D6 <= 120 && D6 >= 100)   ? "30"
-                                                                                              : "";
+                    datosCreditoPersonal[I][7] = (D6 > 140) ? "50 Pesos" : (D6 <= 140 && D6 >= 121) ? "40 Pesos"
+                                                                       : (D6 <= 120 && D6 >= 100)   ? "30 Pesos"
+                                                                                                    : "";
                     datosCreditoPersonal[I][8] = to_string(D6 / stoi(datosCreditoPersonal[I][7])) + " Meses";
-                    forGuardar(I, filasGuardad, 9, puedenRecibirCredito, datosCreditoPersonal);
-                    filasGuardad = filasGuardad + 1;
+                    forGuardar(I, filasGuardadPersonas, 10, puedenRecibirCredito, datosCreditoPersonal);
+                    filasGuardadPersonas = filasGuardadPersonas + 1;
                 };
             };
         };
+        printf("+--------------------------------------------------------+\n");
     };
 };
 
-void modeloMostrarDatos(int filas, string informacionModelo[8], string arrayDeDatos[100][100])
-{
-    printf("+-----------------------------------------\n");
-    for (int i = 0; i < filas; i++)
-    {
-        for (int j = 0; j < 9; j++)
-        {
-            cout << "|";
-            std::cout
-                << std::right << std::setw(43)
-                << informacionModelo[j] << ": " << arrayDeDatos[i][j] << '\t' << '\n';
-        };
-        printf("+-----------------------------------------\n");
-    };
-    cout << endl;
-}
-
 void CreditoPersonal::mostrarCreditoPersonal()
 {
-    modeloMostrarDatos(filasGuardad, informacionesNecesarias, puedenRecibirCredito);
-    // printf("+-----------------------------------------\n");
-    // for (int i = 0; i < filasGuadad; i++)
-    // {
-    //     for (int j = 0; j < 6; j++)
-    //     {
-    //         cout << "|";
-    //         std::cout
-    //             << std::right << std::setw(43)
-    //             << informacionesNecesarias[j] << ": " << puedenRecibirCredito[i][j] << '\t' << '\n';
-    //     };
-    //     printf("+-----------------------------------------\n");
-    // };
-    // cout << endl;
+    modeloMostrarDatos(filasGuardadPersonas, 10, informacionesNecesarias, puedenRecibirCredito);
 };
 
 void CreditoPersonal::opcionesMostrarDatos()
@@ -135,16 +131,21 @@ void CreditoPersonal::opcionesMostrarDatos()
 class CreditoEmpresa : public Banco
 {
 protected:
-    int contadorEmpresarial;
     string datosCreditoEmpresarial[100][100];
     string puedenRecibirCreditoEmpresarial[100][100];
-    string informacionesEmpresa[6] = {
+    string informacionesEmpresa[11] = {
+        "Nombre del solicitante",
+        "Valor por el que pide el crédito",
+        "Dirección",
         "El nombre del director",
         "Dirección del mismo",
         "Ganancia anual promedio durante los últimos 5 años",
         "Cantidad de trabajadores",
         "Ministerio al cual pertenece",
-        "Código"};
+        "Código",
+        "Tiempo en demorar en pagar",
+        "Mensualidades a pagar",
+    };
 
 public:
     int filasEmpresas;
@@ -158,26 +159,24 @@ void CreditoEmpresa::incresarDatosEmpresarial()
 
     for (int I = 0; I < filasEmpresas; I++)
     {
-        for (int J = 0; J < 6; J++)
+        for (int J = 0; J < 9; J++)
         {
-            cout << "Usuario " << I << ", Agregar " << informacionesEmpresa[contadorEmpresarial++] << "[ " << I << " ] [ " << J << " ] : " << endl;
+            cout << "Usuario " << I << ", Agregar " << informacionesEmpresa[J] << "[ " << I << " ] [ " << J << " ] : " << endl;
             cin >> datosCreditoEmpresarial[I][J];
-            if (datosCreditoEmpresarial[I][J] == datosCreditoEmpresarial[I][5])
+
+            if (datosCreditoEmpresarial[I][J] == datosCreditoEmpresarial[I][8])
             {
-                // *TODO:  Tengo que refactorizar este codigo ante de entregar, LO PUEDO LOGAR CON EL OPERADOR TERNACION DE C++
-                if (stoi(datosCreditoEmpresarial[I][3]) > 300 && stoi(datosCreditoEmpresarial[I][2]) >= 10000)
+                int Cinco = stoi(datosCreditoEmpresarial[I][5]);
+                int Seis = stoi(datosCreditoEmpresarial[I][6]);
+                if (Seis > 300 && Cinco >= 10000 || Seis < 300 && Cinco >= 5000 || Seis < 100 && Cinco >= 1000)
                 {
-                    forGuardar(I, filasGuardadEmpresa, 6, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
-                    filasGuardadEmpresa = filasGuardadEmpresa + 1;
-                }
-                if (stoi(datosCreditoEmpresarial[I][3]) < 300 && stoi(datosCreditoEmpresarial[I][2]) >= 5000)
-                {
-                    forGuardar(I, filasGuardadEmpresa, 6, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
-                    filasGuardadEmpresa = filasGuardadEmpresa + 1;
-                }
-                if (stoi(datosCreditoEmpresarial[I][3]) < 100 && stoi(datosCreditoEmpresarial[I][2]) >= 1000)
-                {
-                    forGuardar(I, filasGuardadEmpresa, 6, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
+                    int ValorEnPorcentaje = (Seis > 300 && Cinco >= 10000) ? (Cinco * 40) / 100 : (Seis < 300 && Cinco >= 5000) ? (Cinco * 30) / 100
+                                                                                              : (Seis < 100 && Cinco >= 1000)   ? (Cinco * 20) / 100
+                                                                                                                                : 0;
+                    datosCreditoEmpresarial[I][9] = to_string(stoi(datosCreditoEmpresarial[I][1]) / ValorEnPorcentaje) + " Meses";
+                    datosCreditoEmpresarial[I][10] = to_string(ValorEnPorcentaje) + " Pesos";
+                    cout << ValorEnPorcentaje << endl;
+                    forGuardar(I, filasGuardadEmpresa, 11, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
                     filasGuardadEmpresa = filasGuardadEmpresa + 1;
                 }
             }
@@ -187,7 +186,7 @@ void CreditoEmpresa::incresarDatosEmpresarial()
 
 void CreditoEmpresa::mostrarCreditoEmpresa()
 {
-    modeloMostrarDatos(filasGuardadEmpresa, informacionesEmpresa, puedenRecibirCreditoEmpresarial);
+    modeloMostrarDatos(filasEmpresas, 11, informacionesEmpresa, datosCreditoEmpresarial);
 };
 
 int main()
@@ -211,12 +210,13 @@ int main()
             // system("cls");
             usuarioPersonal.incresarDatosPersonal();
             usuarioPersonal.mostrarCreditoPersonal();
-            usuarioPersonal.opcionesMostrarDatos();
+            usuarioPersonal.capacidadPorEncima();
+            // usuarioPersonal.opcionesMostrarDatos();
         };
         if (tipoCredito == 2)
         {
             cout << "Necesitamos que increses algunas informaciones para tu credito empresarial:" << endl;
-            cout << "Cuantas empresas piensas agregar: " << endl;
+            cout << "Cuantas Empresas piensas agregar: " << endl;
             cin >> UsuarioEmpresa.filasEmpresas;
             UsuarioEmpresa.incresarDatosEmpresarial();
             UsuarioEmpresa.mostrarCreditoEmpresa();
