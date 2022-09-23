@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <vector>
 #include <ios>
+#include <bits/stdc++.h>
 using namespace std;
 
 class Banco
@@ -18,7 +19,7 @@ public:
     void modeloMostrarDatos(int, int, string[8], string[100][100]);
     void mensualidadesPagar();
     void tiempoParaPagar();
-    void valorDestinadoCredito();
+
     // void opcionesMostrarDatos();
 };
 
@@ -55,21 +56,10 @@ void Banco::modeloMostrarDatos(int filas, int colunas, string informacionModelo[
     }
 }
 
-void Banco::mensualidadesPagar(){
-
-};
-
-void Banco::tiempoParaPagar(){
-
-};
-
-void Banco::valorDestinadoCredito(){
-
-};
-
 class CreditoPersonal : public Banco
 {
 protected:
+public:
     string puedenRecibirCredito[100][100];
     string informacionesNecesarias[9] = {
         "Nombre del solicitante",
@@ -81,8 +71,6 @@ protected:
         "Capacidad de pago",
         "Mensualidades a pagar",
         "Tiempo en demorar en pagar"};
-
-public:
     string datosCreditoPersonal[100][100];
     int filasPersonas = 0;
     int filasGuardadPersonas = 0;
@@ -90,6 +78,8 @@ public:
     void incresarDatosPersonal();
     void mostrarCreditoPersonal();
     void capacidadPorEncima();
+    void mensualidadesPagar(int, string[], string[][100], int);
+    void valorDestinadoCredito(int, string[], string[][100], int);
 };
 
 void CreditoPersonal::capacidadPorEncima()
@@ -104,7 +94,7 @@ void CreditoPersonal::capacidadPorEncima()
             contadorEncima = contadorEncima + 1;
         }
     }
-    cout << "Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
+    cout << "---------------Listado con las personas con capacidad de pago por encima de los 200 pesos---------------" << endl;
     modeloMostrarDatos(contadorEncima, 9, informacionesNecesarias, PorEncima);
 }
 
@@ -139,12 +129,95 @@ void CreditoPersonal::incresarDatosPersonal()
 
 void CreditoPersonal::mostrarCreditoPersonal()
 {
-    modeloMostrarDatos(filasGuardadPersonas, 9, informacionesNecesarias, puedenRecibirCredito);
+    if (puedenRecibirCredito[0][0].empty())
+    {
+        cout << "Tienes que incresar datos para poder ver estas necesidades del programa, vuelve al inicio. " << endl;
+        cout << endl;
+    }
+    else
+    {
+        printf("-------------------------Todas las personas que puedan recibir el crédito-------------------------\n");
+        printf("+-----------------------------------------\n");
+        cout << endl;
+        for (int i = 0; i < filasGuardadPersonas; i++)
+        {
+            swap(puedenRecibirCredito[i][0], puedenRecibirCredito[i][3]);
+            swap(informacionesNecesarias[0], informacionesNecesarias[3]);
+            for (int j = 0; j < 9; j++)
+            {
+                cout << "|";
+                std::cout
+                    << std::right << std::setw(43)
+                    << informacionesNecesarias[j] << ": " << puedenRecibirCredito[i][j] << '\t' << '\n';
+            };
+            printf("+-----------------------------------------\n");
+        };
+        cout << endl;
+    }
+};
+
+void CreditoPersonal::mensualidadesPagar(int filasGuarda, string informacion[9], string arrayPuede[][100], int numero)
+{
+    if (arrayPuede[0][0].empty())
+    {
+        cout << "Tienes que incresar datos para poder ver estas necesidades del programa, vuelve al inicio. " << endl;
+        cout << endl;
+    }
+    else
+    {
+        printf("-------------------------las mensualidades a pagar por persona-------------------------\n");
+        printf("+-----------------------------------------\n");
+        cout << endl;
+        for (int i = 0; i < filasGuarda; i++)
+        {
+            for (int j = 0; j < 1; j++)
+            {
+                cout << "|";
+                std::cout
+                    << std::right << std::setw(43)
+                    << informacion[0] << ": " << arrayPuede[i][0] << '\t' << '\n'
+                    << std::right << std::setw(43)
+                    << informacion[numero] << ": " << arrayPuede[i][numero] << '\t' << '\n';
+            };
+            printf("+-----------------------------------------\n");
+        };
+        cout << endl;
+    }
+};
+
+void CreditoPersonal::valorDestinadoCredito(int filasGuarda, string informacion[9], string arrayPuede[][100], int numero)
+{
+    if (arrayPuede[0][0].empty())
+    {
+        cout << "Tienes que incresar datos para poder ver estas necesidades del programa, vuelve al inicio. " << endl;
+        cout << endl;
+    }
+    else
+    {
+        printf("-------------------------El valor total del dinero que se destinará al crédito.-------------------------\n");
+        printf("+-----------------------------------------\n");
+        cout << endl;
+        for (int i = 0; i < filasGuarda; i++)
+        {
+            for (int j = 0; j < 1; j++)
+            {
+                cout << "|";
+                std::cout
+                    << std::right << std::setw(43)
+                    << informacion[0] << ": " << arrayPuede[i][0] << '\t' << '\n'
+                    << std::right << std::setw(50)
+                    << "Dinero que se destinará al crédito: " << arrayPuede[i][numero] << '\t' << '\n';
+            };
+            printf("+-----------------------------------------\n");
+        };
+        cout << endl;
+    }
 };
 
 class CreditoEmpresa : public Banco
 {
 protected:
+public:
     string puedenRecibirCreditoEmpresarial[100][100];
     string informacionesEmpresa[11] = {
         "Nombre del solicitante",
@@ -158,8 +231,6 @@ protected:
         "Código",
         "Tiempo en demorar en pagar",
         "Mensualidades a pagar"};
-
-public:
     string datosCreditoEmpresarial[100][100];
     int filasEmpresas;
     int filasGuardadEmpresa = 0;
@@ -199,54 +270,62 @@ void CreditoEmpresa::incresarDatosEmpresarial()
 
 void CreditoEmpresa::mostrarCreditoEmpresa()
 {
-    modeloMostrarDatos(filasEmpresas, 11, informacionesEmpresa, puedenRecibirCreditoEmpresarial);
+    if (puedenRecibirCreditoEmpresarial[0][0].empty())
+    {
+        cout << "Tienes que incresar datos para poder ver estas necesidades del programa, vuelve al inicio. " << endl;
+        cout << endl;
+    }
+    else
+    {
+        printf("-------------------------Todas las empresas que puedan recibir el crédito-------------------------\n");
+        printf("+-----------------------------------------\n");
+        cout << endl;
+        for (int i = 0; i < filasGuardadEmpresa; i++)
+        {
+            swap(puedenRecibirCreditoEmpresarial[i][0], puedenRecibirCreditoEmpresarial[i][7]);
+            swap(puedenRecibirCreditoEmpresarial[i][1], puedenRecibirCreditoEmpresarial[i][8]);
+            swap(informacionesEmpresa[0], informacionesEmpresa[7]);
+            swap(informacionesEmpresa[1], informacionesEmpresa[8]);
+            for (int j = 0; j < 11; j++)
+            {
+                cout << "|";
+                std::cout
+                    << std::right << std::setw(43)
+                    << informacionesEmpresa[j] << ": " << puedenRecibirCreditoEmpresarial[i][j] << '\t' << '\n';
+            };
+            printf("+-----------------------------------------\n");
+        };
+        cout << endl;
+    }
 };
 
-// void Banco::opcionesMostrarDatos()
-// {
-//     char opcionesMostrar;
-//     CreditoEmpresa UsuarioEmpresa;
-//     CreditoPersonal usuarioPersonal;
-
-//     cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
-//     cout << "A) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
-//     cout << "B) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito." << endl;
-//     cout << "C) El valor total del dinero que se destinará al crédito." << endl;
-//     cout << "D) las mensualidades a pagar" << endl;
-//     cout << "E) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
-//     cout << "F) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
-//     cout << "G) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
-//     cout << "Eligue uno: ";
-//     cin >> opcionesMostrar;
-//     switch (opcionesMostrar)
-//     {
-//     case 'a':
-//         usuarioPersonal.mostrarCreditoPersonal();
-//         break;
-//     case 'b':
-//         UsuarioEmpresa.mostrarCreditoEmpresa();
-
-//         break;
-//     case 'c':
-//         // usuarioP.valorDestinadoCredito();
-//         break;
-//     case 'd':
-//         // usuarioP.mensualidadesPagar();
-//         break;
-//     case 'e':
-//         // usuarioP.tiempoParaPagar();
-//         break;
-//     case 'f':
-//         // usuarioP.capacidadPorEncima();
-//         break;
-//     case 'g':
-//         // usuarioP.capacidadPorEncima();
-//         break;
-//     default:
-//         cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
-//         break;
-//     }
-// };
+void tiempoPagarCredito(int filasGuarda, string informacion[9], string arrayPuede[][100], int numero)
+{
+    if (arrayPuede[0][0].empty())
+    {
+        cout << "Tienes que incresar datos para poder ver estas necesidades del programa, vuelve al inicio. " << endl;
+        cout << endl;
+    }
+    else
+    {
+        printf("+-----------------------------------------\n");
+        cout << endl;
+        for (int i = 0; i < filasGuarda; i++)
+        {
+            for (int j = 0; j < 1; j++)
+            {
+                cout << "|";
+                std::cout
+                    << std::right << std::setw(43)
+                    << informacion[3] << ": " << arrayPuede[i][3] << '\t' << '\n'
+                    << std::right << std::setw(43)
+                    << informacion[numero] << ": " << arrayPuede[i][numero] << '\t' << '\n';
+            };
+            printf("+-----------------------------------------\n");
+        };
+        cout << endl;
+    }
+};
 
 int main()
 {
@@ -267,63 +346,71 @@ int main()
         cout << "4 - Salir" << endl;
         cout << "Eligue uno: ";
         cin >> tipoCredito;
-        if (tipoCredito == 1)
+        if (scanf("%d", &tipoCredito) && feof(stdin))
         {
-            cout << "Necesitamos que increses algunas informaciones ante para tu credito personal" << endl;
-            cout << "Cuantas Personas piensas agregar: ";
-            cin >> usuarioPersonal.filasPersonas;
-            // system("cls");
-            usuarioPersonal.incresarDatosPersonal();
-        };
-        if (tipoCredito == 2)
-        {
-            cout << "Necesitamos que increses algunas informaciones ante para tu credito empresarial:" << endl;
-            cout << "Cuantas Empresas piensas agregar: ";
-            cin >> UsuarioEmpresa.filasEmpresas;
-            UsuarioEmpresa.incresarDatosEmpresarial();
-        };
-
-        if (tipoCredito == 3)
-        {
-            char opcionesMostrar;
-            cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
-            cout << "A) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
-            cout << "B) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito." << endl;
-            cout << "C) El valor total del dinero que se destinará al crédito." << endl;
-            cout << "D) las mensualidades a pagar" << endl;
-            cout << "E) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
-            cout << "F) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
-            cout << "G) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
-
-            cin >> opcionesMostrar;
-            switch (opcionesMostrar)
+            if (tipoCredito == 1)
             {
-            case 'a':
-                usuarioPersonal.mostrarCreditoPersonal();
-                break;
-            case 'b':
-                UsuarioEmpresa.mostrarCreditoEmpresa();
-                break;
-            case 'c':
-                usuarioPersonal.valorDestinadoCredito();
-                break;
-            case 'd':
-                usuarioPersonal.mensualidadesPagar();
-                break;
-            case 'e':
-                usuarioPersonal.tiempoParaPagar();
-                break;
-            case 'f':
-                usuarioPersonal.capacidadPorEncima();
-                break;
-            case 'g':
-                usuarioPersonal.capacidadPorEncima();
-                break;
-            default:
-                cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
-                break;
+                cout << "Necesitamos que increses algunas informaciones ante para tu credito personal" << endl;
+                cout << "Cuantas Personas piensas agregar: ";
+                cin >> usuarioPersonal.filasPersonas;
+                // system("cls");
+                usuarioPersonal.incresarDatosPersonal();
             };
-        };
+            if (tipoCredito == 2)
+            {
+                cout << "Necesitamos que increses algunas informaciones ante para tu credito empresarial:" << endl;
+                cout << "Cuantas Empresas piensas agregar: ";
+                cin >> UsuarioEmpresa.filasEmpresas;
+                UsuarioEmpresa.incresarDatosEmpresarial();
+            };
+
+            if (tipoCredito == 3)
+            {
+                int opcionesMostrar;
+                cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
+                cout << "1) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
+                cout << "2) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito." << endl;
+                cout << "3) El valor total del dinero que se destinará al crédito." << endl;
+                cout << "4) las mensualidades a pagar" << endl;
+                cout << "5) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
+                cout << "6) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
+                cout << "7) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
+                cin >> opcionesMostrar;
+                switch (opcionesMostrar)
+                {
+                case 1:
+                    usuarioPersonal.mostrarCreditoPersonal();
+                    break;
+                case 2:
+                    UsuarioEmpresa.mostrarCreditoEmpresa();
+                    break;
+                case 3:
+                    usuarioPersonal.valorDestinadoCredito(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 6);
+                    break;
+                case 4:
+                    usuarioPersonal.mensualidadesPagar(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 7);
+                    break;
+                case 5:
+                    printf("------------Listado por carné de identidad y el tiempo que demorará en pagar el crédito.------------\n");
+                    tiempoPagarCredito(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 8);
+                    break;
+                case 6:
+                    usuarioPersonal.capacidadPorEncima();
+                    break;
+                case 7:
+                    printf("------------Listado por empresa y el tiempo que demorará en pagar el crédito.------------\n");
+                    tiempoPagarCredito(UsuarioEmpresa.filasGuardadEmpresa, UsuarioEmpresa.informacionesEmpresa, UsuarioEmpresa.puedenRecibirCreditoEmpresarial, 9);
+                    break;
+                default:
+                    cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
+                    break;
+                };
+            };
+        }
+        else
+        {
+            printf("El dato introducido no es un numero\n");
+        }
     };
     return 0;
 };
