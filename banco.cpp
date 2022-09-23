@@ -19,6 +19,7 @@ public:
     void mensualidadesPagar();
     void tiempoParaPagar();
     void valorDestinadoCredito();
+    // void opcionesMostrarDatos();
 };
 
 void Banco::forGuardar(int Filas, int filaGuardad, int filaRecorrer, string arrayPuede[100][100], string arrayGuardado[100][100])
@@ -31,19 +32,27 @@ void Banco::forGuardar(int Filas, int filaGuardad, int filaRecorrer, string arra
 
 void Banco::modeloMostrarDatos(int filas, int colunas, string informacionModelo[8], string arrayDeDatos[100][100])
 {
-    printf("+-----------------------------------------\n");
-    for (int i = 0; i < filas; i++)
+    if (arrayDeDatos[0][0].empty())
     {
-        for (int j = 0; j < colunas; j++)
-        {
-            cout << "|";
-            std::cout
-                << std::right << std::setw(43)
-                << informacionModelo[j] << ": " << arrayDeDatos[i][j] << '\t' << '\n';
-        };
+        cout << "Tienes que incresar datos para poder ver estas necesidades del programa, vuelve al inicio. " << endl;
+        cout << endl;
+    }
+    else
+    {
         printf("+-----------------------------------------\n");
-    };
-    cout << endl;
+        for (int i = 0; i < filas; i++)
+        {
+            for (int j = 0; j < colunas; j++)
+            {
+                cout << "|";
+                std::cout
+                    << std::right << std::setw(43)
+                    << informacionModelo[j] << ": " << arrayDeDatos[i][j] << '\t' << '\n';
+            };
+            printf("+-----------------------------------------\n");
+        };
+        cout << endl;
+    }
 }
 
 void Banco::mensualidadesPagar(){
@@ -77,11 +86,11 @@ public:
     string datosCreditoPersonal[100][100];
     int filasPersonas = 0;
     int filasGuardadPersonas = 0;
+    int colunasPrincipal = 0;
     void incresarDatosPersonal();
     void mostrarCreditoPersonal();
-    void opcionesMostrarDatos();
     void capacidadPorEncima();
-} da;
+};
 
 void CreditoPersonal::capacidadPorEncima()
 {
@@ -101,13 +110,12 @@ void CreditoPersonal::capacidadPorEncima()
 
 void CreditoPersonal::incresarDatosPersonal()
 {
-    for (int I = 0; I < filasPersonas; I++)
+    for (int I = colunasPrincipal; I < (filasPersonas + colunasPrincipal); I++)
     {
         cin.ignore();
-
         for (int J = 0; J < 6; J++)
         {
-            cout << "Usuario " << I + 1 << ", Agregar " << informacionesNecesarias[J] << "[ " << I << " ] [ " << J << " ] : ";
+            cout << "Tu eres el usuario " << I + 1 << ", Agregar " << informacionesNecesarias[J] << "[ " << I << " ] [ " << J << " ] : ";
             getline(cin, datosCreditoPersonal[I][J]);
             if (datosCreditoPersonal[I][J] == datosCreditoPersonal[I][5])
             {
@@ -126,45 +134,12 @@ void CreditoPersonal::incresarDatosPersonal()
         };
         printf("+--------------------------------------------------------+\n");
     };
+    colunasPrincipal = colunasPrincipal + filasPersonas;
 };
 
 void CreditoPersonal::mostrarCreditoPersonal()
 {
     modeloMostrarDatos(filasGuardadPersonas, 9, informacionesNecesarias, puedenRecibirCredito);
-};
-
-void CreditoPersonal::opcionesMostrarDatos()
-{
-    char opcionesMostrar;
-    cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
-    cout << "A) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
-    cout << "B) El valor total del dinero que se destinará al crédito." << endl;
-    cout << "C) las mensualidades a pagar" << endl;
-    cout << "D) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
-    cout << "E) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
-
-    cin >> opcionesMostrar;
-    switch (opcionesMostrar)
-    {
-    case 'a':
-        mostrarCreditoPersonal();
-        break;
-    case 'b':
-        valorDestinadoCredito();
-        break;
-    case 'c':
-        mensualidadesPagar();
-        break;
-    case 'd':
-        tiempoParaPagar();
-        break;
-    case 'e':
-        capacidadPorEncima();
-        break;
-    default:
-        cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
-        break;
-    }
 };
 
 class CreditoEmpresa : public Banco
@@ -182,27 +157,25 @@ protected:
         "Ministerio al cual pertenece",
         "Código",
         "Tiempo en demorar en pagar",
-        "Mensualidades a pagar",
-    };
+        "Mensualidades a pagar"};
 
 public:
     string datosCreditoEmpresarial[100][100];
     int filasEmpresas;
     int filasGuardadEmpresa = 0;
+    int colunasPrincipalEmpresa = 0;
     void incresarDatosEmpresarial();
-    void opcionesMostrarDatosEmpresas();
     void mostrarCreditoEmpresa();
 };
 
 void CreditoEmpresa::incresarDatosEmpresarial()
 {
-
-    for (int I = 0; I < filasEmpresas; I++)
+    for (int I = colunasPrincipalEmpresa; I < (filasEmpresas + colunasPrincipalEmpresa); I++)
     {
         cin.ignore();
         for (int J = 0; J < 9; J++)
         {
-            cout << "Usuario " << I << ", Agregar " << informacionesEmpresa[J] << "[ " << I << " ] [ " << J << " ] : ";
+            cout << "Tu eres el usuario " << I + 1 << ", Agregar " << informacionesEmpresa[J] << "[ " << I << " ] [ " << J << " ] : ";
             getline(cin, datosCreditoEmpresarial[I][J]);
             if (datosCreditoEmpresarial[I][J] == datosCreditoEmpresarial[I][8])
             {
@@ -215,49 +188,65 @@ void CreditoEmpresa::incresarDatosEmpresarial()
                                                                                                                                 : 0;
                     datosCreditoEmpresarial[I][9] = to_string(stoi(datosCreditoEmpresarial[I][1]) / ValorEnPorcentaje) + " Meses";
                     datosCreditoEmpresarial[I][10] = to_string(ValorEnPorcentaje) + " Pesos";
-                    cout << ValorEnPorcentaje << endl;
-                    forGuardar(I, filasGuardadEmpresa, 11, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
+                    forGuardar(I, filasGuardadEmpresa, 12, puedenRecibirCreditoEmpresarial, datosCreditoEmpresarial);
                     filasGuardadEmpresa = filasGuardadEmpresa + 1;
-                }
-            }
+                };
+            };
         };
     };
-}
+    colunasPrincipalEmpresa = colunasPrincipalEmpresa + filasEmpresas;
+};
 
 void CreditoEmpresa::mostrarCreditoEmpresa()
 {
-    modeloMostrarDatos(filasEmpresas, 11, informacionesEmpresa, datosCreditoEmpresarial);
+    modeloMostrarDatos(filasEmpresas, 11, informacionesEmpresa, puedenRecibirCreditoEmpresarial);
 };
 
-void CreditoEmpresa::opcionesMostrarDatosEmpresas()
-{
-    char opcionesMostrar;
-    cout << "-------------------- Cual de las siguientes opciones quieres elegir --------------------" << endl;
-    cout << "A) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito" << endl;
-    cout << "B) El valor total del dinero que se destinará al crédito." << endl;
-    cout << "C) las mensualidades a pagar" << endl;
-    cout << "D) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
+// void Banco::opcionesMostrarDatos()
+// {
+//     char opcionesMostrar;
+//     CreditoEmpresa UsuarioEmpresa;
+//     CreditoPersonal usuarioPersonal;
 
-    cin >> opcionesMostrar;
-    switch (opcionesMostrar)
-    {
-    case 'a':
-        mostrarCreditoEmpresa();
-        break;
-    case 'b':
-        valorDestinadoCredito();
-        break;
-    case 'c':
-        mensualidadesPagar();
-        break;
-    case 'd':
-        tiempoParaPagar();
-        break;
-    default:
-        cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
-        break;
-    };
-};
+//     cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
+//     cout << "A) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
+//     cout << "B) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito." << endl;
+//     cout << "C) El valor total del dinero que se destinará al crédito." << endl;
+//     cout << "D) las mensualidades a pagar" << endl;
+//     cout << "E) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
+//     cout << "F) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
+//     cout << "G) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
+//     cout << "Eligue uno: ";
+//     cin >> opcionesMostrar;
+//     switch (opcionesMostrar)
+//     {
+//     case 'a':
+//         usuarioPersonal.mostrarCreditoPersonal();
+//         break;
+//     case 'b':
+//         UsuarioEmpresa.mostrarCreditoEmpresa();
+
+//         break;
+//     case 'c':
+//         // usuarioP.valorDestinadoCredito();
+//         break;
+//     case 'd':
+//         // usuarioP.mensualidadesPagar();
+//         break;
+//     case 'e':
+//         // usuarioP.tiempoParaPagar();
+//         break;
+//     case 'f':
+//         // usuarioP.capacidadPorEncima();
+//         break;
+//     case 'g':
+//         // usuarioP.capacidadPorEncima();
+//         break;
+//     default:
+//         cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
+//         break;
+//     }
+// };
 
 int main()
 {
@@ -266,11 +255,12 @@ int main()
     int filasE;
     CreditoPersonal usuarioPersonal;
     CreditoEmpresa UsuarioEmpresa;
-    // cout << usuarioPersonal.datosCreditoPersonal[0][0] << endl;
+
     cout << "-------------------- Bienvenido al Banco UAPA --------------------" << endl;
-    cout << "Que tipo de credito quieres:" << endl;
+
     while (tipoCredito != 4)
     {
+        cout << "Que tipo de credito quieres:" << endl;
         cout << "1 - Credito Personal" << endl;
         cout << "2 - Credito para una empresa" << endl;
         cout << "3 - Las necesidades del Banco" << endl;
@@ -282,50 +272,53 @@ int main()
             cout << "Necesitamos que increses algunas informaciones ante para tu credito personal" << endl;
             cout << "Cuantas Personas piensas agregar: ";
             cin >> usuarioPersonal.filasPersonas;
-            // usuarioPersonal.filasPersonas = usuarioPersonal.filasPersonas + filasP;
             // system("cls");
             usuarioPersonal.incresarDatosPersonal();
-            usuarioPersonal.opcionesMostrarDatos();
-            // usuarioPersonal.capacidadPorEncima();
         };
         if (tipoCredito == 2)
         {
             cout << "Necesitamos que increses algunas informaciones ante para tu credito empresarial:" << endl;
-            cout << "Cuantas Empresas piensas agregar: " << endl;
+            cout << "Cuantas Empresas piensas agregar: ";
             cin >> UsuarioEmpresa.filasEmpresas;
             UsuarioEmpresa.incresarDatosEmpresarial();
-            UsuarioEmpresa.opcionesMostrarDatosEmpresas();
-            // UsuarioEmpresa.mostrarCreditoEmpresa();
         };
 
         if (tipoCredito == 3)
         {
-            char tipo;
-            string noPermitido = "Tienes que incresar datos para poder ver estas necesidades del programa, vuelve al inicio.";
-            cout << "Las necesidades del credito, A) Personal o B) Empresarial : " << endl;
-            cin >> tipo;
-            switch (tipo)
+            char opcionesMostrar;
+            cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
+            cout << "A) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
+            cout << "B) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito." << endl;
+            cout << "C) El valor total del dinero que se destinará al crédito." << endl;
+            cout << "D) las mensualidades a pagar" << endl;
+            cout << "E) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
+            cout << "F) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
+            cout << "G) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
+
+            cin >> opcionesMostrar;
+            switch (opcionesMostrar)
             {
             case 'a':
-                if (usuarioPersonal.datosCreditoPersonal[0][0].empty())
-                {
-                    cout << noPermitido << endl;
-                    break;
-                }
-                else
-                {
-                    usuarioPersonal.opcionesMostrarDatos();
-                }
+                usuarioPersonal.mostrarCreditoPersonal();
+                break;
             case 'b':
-                if (UsuarioEmpresa.datosCreditoEmpresarial[0][0].empty())
-                {
-                    cout << noPermitido << endl;
-                    break;
-                }
-                else
-                {
-                    UsuarioEmpresa.opcionesMostrarDatosEmpresas();
-                }
+                UsuarioEmpresa.mostrarCreditoEmpresa();
+                break;
+            case 'c':
+                usuarioPersonal.valorDestinadoCredito();
+                break;
+            case 'd':
+                usuarioPersonal.mensualidadesPagar();
+                break;
+            case 'e':
+                usuarioPersonal.tiempoParaPagar();
+                break;
+            case 'f':
+                usuarioPersonal.capacidadPorEncima();
+                break;
+            case 'g':
+                usuarioPersonal.capacidadPorEncima();
+                break;
             default:
                 cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
                 break;
