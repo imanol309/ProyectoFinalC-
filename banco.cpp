@@ -7,21 +7,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Estas es la clase padre de todos, todos enredan de ella algunas funciones
 class Banco
 {
 protected:
-    string nombreDelSolicitante;
-    int valorCredito;
-    string direccion;
-
 public:
     void forGuardar(int, int, int, string[100][100], string[100][100]);
     void modeloMostrarDatos(int, int, string[8], string[100][100]);
-    void mensualidadesPagar();
-    void tiempoParaPagar();
-
-    // void opcionesMostrarDatos();
 };
+
+// Estas funcion es la mas importante, porque se encargar de guadar los datos en los array que los datos complen
 
 void Banco::forGuardar(int Filas, int filaGuardad, int filaRecorrer, string arrayPuede[100][100], string arrayGuardado[100][100])
 {
@@ -346,71 +341,70 @@ int main()
         cout << "4 - Salir" << endl;
         cout << "Eligue uno: ";
         cin >> tipoCredito;
-        if (scanf("%d", &tipoCredito) && feof(stdin))
+        // if (scanf("%d", &tipoCredito) && feof(stdin))
+        // {
+        if (tipoCredito == 1)
         {
-            if (tipoCredito == 1)
-            {
-                cout << "Necesitamos que increses algunas informaciones ante para tu credito personal" << endl;
-                cout << "Cuantas Personas piensas agregar: ";
-                cin >> usuarioPersonal.filasPersonas;
-                // system("cls");
-                usuarioPersonal.incresarDatosPersonal();
-            };
-            if (tipoCredito == 2)
-            {
-                cout << "Necesitamos que increses algunas informaciones ante para tu credito empresarial:" << endl;
-                cout << "Cuantas Empresas piensas agregar: ";
-                cin >> UsuarioEmpresa.filasEmpresas;
-                UsuarioEmpresa.incresarDatosEmpresarial();
-            };
+            cout << "Necesitamos que increses algunas informaciones ante para tu credito personal" << endl;
+            cout << "Cuantas Personas piensas agregar: ";
+            cin >> usuarioPersonal.filasPersonas;
+            // system("cls");
+            usuarioPersonal.incresarDatosPersonal();
+        };
+        if (tipoCredito == 2)
+        {
+            cout << "Necesitamos que increses algunas informaciones ante para tu credito empresarial:" << endl;
+            cout << "Cuantas Empresas piensas agregar: ";
+            cin >> UsuarioEmpresa.filasEmpresas;
+            UsuarioEmpresa.incresarDatosEmpresarial();
+        };
 
-            if (tipoCredito == 3)
-            {
-                int opcionesMostrar;
-                cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
-                cout << "1) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
-                cout << "2) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito." << endl;
-                cout << "3) El valor total del dinero que se destinará al crédito." << endl;
-                cout << "4) las mensualidades a pagar" << endl;
-                cout << "5) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
-                cout << "6) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
-                cout << "7) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
-                cin >> opcionesMostrar;
-                switch (opcionesMostrar)
-                {
-                case 1:
-                    usuarioPersonal.mostrarCreditoPersonal();
-                    break;
-                case 2:
-                    UsuarioEmpresa.mostrarCreditoEmpresa();
-                    break;
-                case 3:
-                    usuarioPersonal.valorDestinadoCredito(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 6);
-                    break;
-                case 4:
-                    usuarioPersonal.mensualidadesPagar(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 7);
-                    break;
-                case 5:
-                    printf("------------Listado por carné de identidad y el tiempo que demorará en pagar el crédito.------------\n");
-                    tiempoPagarCredito(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 8);
-                    break;
-                case 6:
-                    usuarioPersonal.capacidadPorEncima();
-                    break;
-                case 7:
-                    printf("------------Listado por empresa y el tiempo que demorará en pagar el crédito.------------\n");
-                    tiempoPagarCredito(UsuarioEmpresa.filasGuardadEmpresa, UsuarioEmpresa.informacionesEmpresa, UsuarioEmpresa.puedenRecibirCreditoEmpresarial, 9);
-                    break;
-                default:
-                    cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
-                    break;
-                };
-            };
-        }
-        else
+        if (tipoCredito == 3)
         {
-            printf("El dato introducido no es un numero\n");
-        }
-    };
-    return 0;
+            int opcionesMostrar;
+            cout << "--------------------Cual de las siguientes opciones quieres elegir--------------------" << endl;
+            cout << "1) Un listado ordenado por el número de carné de identidad con todas las personas que puedan recibir el crédito" << endl;
+            cout << "2) Un listado ordenado por ministerio y código de todas las empresas que puedan recibir el crédito." << endl;
+            cout << "3) El valor total del dinero que se destinará al crédito." << endl;
+            cout << "4) las mensualidades a pagar" << endl;
+            cout << "5) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
+            cout << "6) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
+            cout << "7) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
+            cin >> opcionesMostrar;
+            switch (opcionesMostrar)
+            {
+            case 1:
+                usuarioPersonal.mostrarCreditoPersonal();
+                break;
+            case 2:
+                UsuarioEmpresa.mostrarCreditoEmpresa();
+                break;
+            case 3:
+                usuarioPersonal.valorDestinadoCredito(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 6);
+                break;
+            case 4:
+                usuarioPersonal.mensualidadesPagar(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 7);
+                break;
+            case 5:
+                printf("------------Listado por carné de identidad y el tiempo que demorará en pagar el crédito.------------\n");
+                tiempoPagarCredito(usuarioPersonal.filasGuardadPersonas, usuarioPersonal.informacionesNecesarias, usuarioPersonal.puedenRecibirCredito, 8);
+                break;
+            case 6:
+                usuarioPersonal.capacidadPorEncima();
+                break;
+            case 7:
+                printf("------------Listado por empresa y el tiempo que demorará en pagar el crédito.------------\n");
+                tiempoPagarCredito(UsuarioEmpresa.filasGuardadEmpresa, UsuarioEmpresa.informacionesEmpresa, UsuarioEmpresa.puedenRecibirCreditoEmpresarial, 9);
+                break;
+            default:
+                cout << "No elegiste ninguna de las anteriores, vuelve de nuevo" << endl;
+                break;
+            };
+        };
+    }
+    // else
+    // {
+    //     printf("El dato introducido no es un numero\n");
+    // }
+return 0;
 };
