@@ -100,7 +100,7 @@ void CreditoPersonal::incresarDatosPersonal()
         cin.ignore();
         for (int J = 0; J < 6; J++)
         {
-            cout << "Tu eres el usuario " << I + 1 << ", Agregar " << informacionesNecesarias[J] << "[ " << I << " ] [ " << J << " ] : ";
+            cout << "Tu eres el usuario " << I + 1 << ", Agregar " << informacionesNecesarias[J] << ": ";
             getline(cin, datosCreditoPersonal[I][J]);
             if (datosCreditoPersonal[I][J] == datosCreditoPersonal[I][5])
             {
@@ -241,7 +241,7 @@ void CreditoEmpresa::incresarDatosEmpresarial()
         cin.ignore();
         for (int J = 0; J < 9; J++)
         {
-            cout << "Tu eres el usuario " << I + 1 << ", Agregar " << informacionesEmpresa[J] << "[ " << I << " ] [ " << J << " ] : ";
+            cout << "Tu eres el usuario " << I + 1 << ", Agregar " << informacionesEmpresa[J] << ": ";
             getline(cin, datosCreditoEmpresarial[I][J]);
             if (datosCreditoEmpresarial[I][J] == datosCreditoEmpresarial[I][8])
             {
@@ -331,7 +331,6 @@ int main()
     CreditoEmpresa UsuarioEmpresa;
 
     cout << "-------------------- Bienvenido al Banco UAPA --------------------" << endl;
-
     while (tipoCredito != 4)
     {
         cout << "Que tipo de credito quieres:" << endl;
@@ -339,10 +338,8 @@ int main()
         cout << "2 - Credito para una empresa" << endl;
         cout << "3 - Las necesidades del Banco" << endl;
         cout << "4 - Salir" << endl;
-        cout << "Eligue uno: ";
+        cout << "Eligue uno numero: ";
         cin >> tipoCredito;
-        // if (scanf("%d", &tipoCredito) && feof(stdin))
-        // {
         if (tipoCredito == 1)
         {
             cout << "Necesitamos que increses algunas informaciones ante para tu credito personal" << endl;
@@ -370,6 +367,7 @@ int main()
             cout << "5) Determine y visualice un listado con el número del carné de identidad y el tiempo que demorará en pagar el crédito" << endl;
             cout << "6) Listado con las personas con capacidad de pago por encima de los 200 pesos" << endl;
             cout << "7) Determine y visualice un listado por empresa y el tiempo que demorará en pagar el crédito." << endl;
+            cout << "Eligue uno numero: ";
             cin >> opcionesMostrar;
             switch (opcionesMostrar)
             {
@@ -402,9 +400,5 @@ int main()
             };
         };
     }
-    // else
-    // {
-    //     printf("El dato introducido no es un numero\n");
-    // }
-return 0;
+    return 0;
 };
